@@ -103,15 +103,14 @@ export default function Header() {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.45, ease, delay: 0.25 + i * 0.07 }}
                     >
-                      <Link
-                        href={item.href}
-                        className={`link-underline flex items-center gap-1 text-[11px] tracking-[0.3em] uppercase text-ink hover:text-sage ${active ? "is-active text-sage" : ""}`}
+                      <span
+                        className={`flex items-center gap-1 text-[11px] tracking-[0.3em] uppercase cursor-default select-none text-ink group-hover:text-sage ${active ? "text-sage" : ""}`}
                       >
                         {t(`nav.${item.key}`)}
                         <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-2.5 h-2.5 mt-px transition-transform duration-200 group-hover:rotate-180" aria-hidden>
                           <polyline points="1 1 5 5 9 1" />
                         </svg>
-                      </Link>
+                      </span>
                       <div className="absolute top-full left-0 pt-3 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity duration-200 z-50">
                         <motion.div
                           initial={{ opacity: 0, y: 6 }}
@@ -224,19 +223,25 @@ export default function Header() {
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ duration: 0.35, ease, delay: 0.1 + i * 0.06 }}
                     >
-                      <Link href={item.href} className="font-cormorant text-3xl text-sage hover:text-sage-dark transition-colors">
-                        {t(`nav.${item.key}`)}
-                      </Link>
-                      {item.children && (
-                        <ul className="mt-2 ml-4 flex flex-col gap-2">
-                          {item.children.map((child) => (
-                            <li key={child.href}>
-                              <Link href={child.href} className="text-[11px] tracking-[0.25em] uppercase text-ink/60 hover:text-sage transition-colors">
-                                — {child.label}
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
+                      {item.children ? (
+                        <>
+                          <span className="font-cormorant text-3xl text-sage/60 select-none">
+                            {t(`nav.${item.key}`)}
+                          </span>
+                          <ul className="mt-2 ml-4 flex flex-col gap-2">
+                            {item.children.map((child) => (
+                              <li key={child.href}>
+                                <Link href={child.href} className="text-[11px] tracking-[0.25em] uppercase text-ink/60 hover:text-sage transition-colors">
+                                  — {child.label}
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        </>
+                      ) : (
+                        <Link href={item.href} className="font-cormorant text-3xl text-sage hover:text-sage-dark transition-colors">
+                          {t(`nav.${item.key}`)}
+                        </Link>
                       )}
                     </motion.li>
                   ))}

@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import heroImage from "@/src/assets/images/wildflowertattoolydiaszubert.JPG";
 import AboutSection from "@/components/AboutSection";
 import SpecializationsSection from "@/components/SpecializationsSection";
+import ServicesSection from "@/components/ServicesSection";
 import HealedTattoosSection from "@/components/HealedTattoosSection";
 import PortfolioSection from "@/components/PortfolioSection";
 import InformationSection from "@/components/InformationSection";
@@ -47,6 +48,7 @@ export default function HomePage() {
 
       <AboutSection />
       <SpecializationsSection />
+      <ServicesSection />
       <HealedTattoosSection />
       <PortfolioSection />
       <InformationSection />
