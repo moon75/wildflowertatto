@@ -22,7 +22,7 @@ const cormorant = Cormorant({
 
 export const metadata: Metadata = {
   title: "Wildflower Tattoo — Lydia Szubert",
-  description: "Bespoke fine line & botanical tattoos by Lydia Szubert",
+  description: "Bespoke colour realism tattoos by Lydia Szubert",
 };
 
 export default function RootLayout({

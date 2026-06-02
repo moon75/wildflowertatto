@@ -27,18 +27,18 @@ const services = [
     title: "Cover Ups",
     subtitle: "Transform an old tattoo into something new",
     body: "Cover up tattoos require more time and preparation than a standard tattoo. I will assess your existing tattoo and design a new piece that works with the original, making the most of what is already there.",
-    href: "/information/faq#q8",
+    href: "/portfolio?cat=coverup",
     external: false,
-    cta: "Learn more",
+    cta: "View coverup portfolio",
   },
   {
     img: correctImg,
     title: "Improve & Correct",
     subtitle: "Refresh or rework existing tattoos",
     body: "I can make improvements to tattoos that have faded, spread or lost detail over time. Depending on the existing tattoo, options range from a simple touch-up to a full rework. Laser sessions are sometimes recommended first for the best results.",
-    href: "/information/faq#q9",
+    href: "/portfolio?cat=coverup",
     external: false,
-    cta: "Learn more",
+    cta: "View coverup portfolio",
   },
 ] as const;
 

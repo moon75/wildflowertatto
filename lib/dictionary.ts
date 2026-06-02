@@ -4,11 +4,12 @@ export const locales: Locale[] = ["en", "nl"];
 
 export const dictionary = {
   en: {
-    tagline: "Bespoke fine line tattoos · Bookings open",
+    tagline: "Bespoke colour realism tattoos · Bookings open",
     nav: {
       home: "Home",
       about: "About",
       portfolio: "Portfolio",
+      aftercare: "Aftercare",
       information: "Information",
       contact: "Contact",
     },
@@ -156,7 +157,7 @@ export const dictionary = {
       step5Heading: "5. Design Process",
       step5Text: "Around one week before the appointment, I will begin preparing your tattoo design. The design will usually be sent through WhatsApp before the appointment so we have time to discuss feedback and make any necessary adjustments before the tattoo day. Once the design is confirmed, everything is ready for the appointment and I will be looking forward to meeting you and bringing the project to life.",
       step5Note: "If you are unsure about what you want to get, or just want to brainstorm with me about the design, I have time before my workdays at 10am to do free design talking appointments. Please send me a message to reserve a spot.",
-      closing: "Hope To See You Soon!",
+      closing: "hope to see you soon",
       photosLabel: "Photos to send",
     },
     footer: {
@@ -177,11 +178,12 @@ export const dictionary = {
     },
   },
   nl: {
-    tagline: "Op maat gemaakte fineline tattoos · Boekingen open",
+    tagline: "Op maat gemaakte kleur realisme tattoos · Boekingen open",
     nav: {
       home: "Home",
       about: "Over",
       portfolio: "Portfolio",
+      aftercare: "Aftercare",
       information: "Informatie",
       contact: "Contact",
     },
@@ -329,7 +331,7 @@ export const dictionary = {
       step5Heading: "5. Ontwerpproces",
       step5Text: "Ongeveer één week voor de afspraak begin ik met het voorbereiden van je tattoo-ontwerp. Het ontwerp wordt meestal via WhatsApp gestuurd voor de afspraak, zodat we tijd hebben om feedback te bespreken en eventuele aanpassingen te maken. Zodra het ontwerp is bevestigd, is alles klaar voor de afspraak en kijk ik ernaar uit je te ontmoeten en het project tot leven te brengen.",
       step5Note: "Als je niet zeker weet wat je wilt, of gewoon met mij wilt brainstormen over het ontwerp, heb ik tijd voor mijn werkdagen om 10:00 voor gratis ontwerpspreekuur. Stuur me een bericht om een plek te reserveren.",
-      closing: "Tot Snel!",
+      closing: "tot snel",
       photosLabel: "Foto's om te sturen",
     },
     footer: {

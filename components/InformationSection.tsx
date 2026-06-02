@@ -6,47 +6,50 @@ import { motion } from "framer-motion";
 const ease = [0.22, 1, 0.36, 1] as const;
 
 const links = [
-  { href: "/information/terms", label: "Terms & conditions" },
   { href: "/information/book", label: "How to book" },
   { href: "/information/faq", label: "FAQ" },
+  { href: "/information/terms", label: "Terms & conditions" },
 ];
 
 export default function InformationSection() {
   return (
     <section className="py-16 md:py-24 bg-bone">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-10">
+      <div className="max-w-3xl mx-auto px-6 text-center">
 
-          <motion.h2
-            className="text-sage leading-none"
-            style={{ fontFamily: "var(--font-androgy), serif", fontWeight: "normal", fontSize: "clamp(2.25rem, 5vw, 4rem)" }}
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.65, ease }}
-          >
-            Information
-          </motion.h2>
+        <motion.h2
+          className="text-sage leading-none mb-10"
+          style={{ fontFamily: "var(--font-androgy), serif", fontWeight: "normal", fontSize: "clamp(2.25rem, 5vw, 4rem)" }}
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.65, ease }}
+        >
+          Information
+        </motion.h2>
 
-          <motion.ul
-            className="flex flex-col gap-3 text-sage font-sans text-lg"
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true }}
-            variants={{ hidden: {}, show: { transition: { staggerChildren: 0.09 } } }}
-          >
-            {links.map((link) => (
-              <motion.li
-                key={link.href}
-                variants={{ hidden: { opacity: 0, x: 20 }, show: { opacity: 1, x: 0, transition: { duration: 0.5, ease } } }}
+        <motion.ul
+          className="flex flex-col divide-y divide-sage/10"
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true }}
+          variants={{ hidden: {}, show: { transition: { staggerChildren: 0.09 } } }}
+        >
+          {links.map((link) => (
+            <motion.li
+              key={link.href}
+              variants={{ hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.5, ease } } }}
+            >
+              <Link
+                href={link.href}
+                className="flex items-center justify-between gap-4 py-4 px-2 text-sage hover:text-sage-dark transition-colors group"
+                style={{ fontFamily: "var(--font-androgy), serif", fontSize: "clamp(1.15rem, 2.5vw, 1.6rem)" }}
               >
-                <Link href={link.href} className="hover:underline underline-offset-4 transition-colors hover:text-sage-dark">
-                  {link.label}
-                </Link>
-              </motion.li>
-            ))}
-          </motion.ul>
-        </div>
+                {link.label}
+                <span className="text-sage/40 group-hover:text-sage group-hover:translate-x-1 transition-all text-lg leading-none">›</span>
+              </Link>
+            </motion.li>
+          ))}
+        </motion.ul>
       </div>
     </section>
   );

@@ -148,7 +148,7 @@ export default function HealedTattoosSection() {
             {slides.map((slide, i) => (
               <Link
                 key={i}
-                href="/portfolio"
+                href="/portfolio?cat=healed"
                 className="snap-center shrink-0 w-[78vw] sm:w-[48vw] md:w-[31%] group"
                 aria-label={t("healedTattoos.viewGallery")}
               >

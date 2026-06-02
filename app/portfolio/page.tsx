@@ -1,7 +1,7 @@
 "use client";
 
 import Image, { type StaticImageData } from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLocale } from "@/lib/i18n";
 import { contact } from "@/lib/contact";
@@ -21,8 +21,10 @@ import healedImg      from "@/src/assets/images/healedmicrocolourrealismtattoo.J
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
-type Category = "animalPet" | "microRealism" | "blackGrey" | "botanical" | "portrait";
+type Category = "animalPet" | "microRealism" | "blackGrey" | "botanical" | "portrait" | "coverup" | "healed";
 type Filter = "all" | Category;
+
+const validFilters: Filter[] = ["all", "animalPet", "microRealism", "blackGrey", "botanical", "portrait", "coverup", "healed"];
 
 interface Item {
   img: StaticImageData;
@@ -31,23 +33,32 @@ interface Item {
 }
 
 const items: Item[] = [
-  { img: birdImg,      alt: "Colour realism magpie bird tattoo",          categories: ["animalPet"] },
-  { img: poppyImg,     alt: "Colour botanical poppy tattoo",               categories: ["botanical"] },
-  { img: dogsImg,      alt: "Micro realism three dogs portrait tattoo",    categories: ["microRealism", "animalPet"] },
-  { img: feminineImg,  alt: "Colourful feminine botanical tattoo",         categories: ["botanical"] },
-  { img: tigerImg,     alt: "Black and grey realism tiger tattoo",         categories: ["blackGrey", "animalPet"] },
-  { img: limeImg,      alt: "Colour realism lime botanical tattoo",        categories: ["botanical"] },
-  { img: portraitImg,  alt: "Black and grey realism portrait tattoo",      categories: ["portrait", "blackGrey"] },
-  { img: cherryImg,    alt: "Colour cherry realism tattoo",                categories: ["botanical"] },
-  { img: healedImg,    alt: "Healed micro colour realism tattoo",          categories: ["microRealism"] },
-  { img: dandelionImg, alt: "Botanical dandelion flower tattoo",           categories: ["botanical"] },
-  { img: daffodilImg,  alt: "Colour daffodil realism tattoo",              categories: ["botanical"] },
-  { img: coverupImg,   alt: "Cover-up tattoo rework",                      categories: ["blackGrey"] },
+  { img: birdImg,      alt: "Colour realism magpie bird tattoo",         categories: ["animalPet"] },
+  { img: poppyImg,     alt: "Colour botanical poppy tattoo",              categories: ["botanical", "healed"] },
+  { img: dogsImg,      alt: "Micro realism three dogs portrait tattoo",   categories: ["microRealism", "animalPet"] },
+  { img: feminineImg,  alt: "Colourful feminine botanical tattoo",        categories: ["botanical", "healed"] },
+  { img: tigerImg,     alt: "Black and grey realism tiger tattoo",        categories: ["blackGrey", "animalPet"] },
+  { img: limeImg,      alt: "Colour realism lime botanical tattoo",       categories: ["botanical", "healed"] },
+  { img: portraitImg,  alt: "Black and grey realism portrait tattoo",     categories: ["portrait", "blackGrey"] },
+  { img: cherryImg,    alt: "Colour cherry realism tattoo",               categories: ["botanical", "healed"] },
+  { img: healedImg,    alt: "Healed micro colour realism tattoo",         categories: ["microRealism", "healed"] },
+  { img: dandelionImg, alt: "Botanical dandelion flower tattoo",          categories: ["botanical", "healed"] },
+  { img: daffodilImg,  alt: "Colour daffodil realism tattoo",             categories: ["botanical", "healed"] },
+  { img: coverupImg,   alt: "Cover-up tattoo rework",                     categories: ["coverup", "blackGrey"] },
 ];
 
 export default function PortfolioPage() {
   const { t } = useLocale();
   const [active, setActive] = useState<Filter>("all");
+
+  // Read initial filter from URL on mount
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const cat = params.get("cat") as Filter | null;
+    if (cat && validFilters.includes(cat)) {
+      setActive(cat);
+    }
+  }, []);
 
   const filters: { key: Filter; label: string }[] = [
     { key: "all",          label: "All" },
@@ -56,6 +67,8 @@ export default function PortfolioPage() {
     { key: "microRealism", label: t("portfolio.categories.microRealism") },
     { key: "blackGrey",    label: t("portfolio.categories.blackGrey") },
     { key: "portrait",     label: t("portfolio.categories.portrait") },
+    { key: "coverup",      label: "Cover Ups" },
+    { key: "healed",       label: "Healed" },
   ];
 
   const visible = active === "all"
@@ -130,10 +143,7 @@ export default function PortfolioPage() {
       {/* ── Grid ── */}
       <section className="bg-white py-10 md:py-14">
         <div className="max-w-6xl mx-auto px-6">
-          <motion.div
-            layout
-            className="columns-2 md:columns-3 gap-3 md:gap-4"
-          >
+          <motion.div layout className="columns-2 md:columns-3 gap-3 md:gap-4">
             <AnimatePresence mode="popLayout">
               {visible.map((item) => (
                 <motion.div
@@ -156,7 +166,6 @@ export default function PortfolioPage() {
             </AnimatePresence>
           </motion.div>
 
-          {/* Empty state */}
           {visible.length === 0 && (
             <motion.p
               className="text-center text-ink/40 py-20 text-sm"

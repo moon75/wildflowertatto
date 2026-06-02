@@ -150,19 +150,25 @@ export default function BookPage() {
             </FadeIn>
           </div>
 
-          {/* More reference examples */}
-          <FadeIn className="grid grid-cols-3 gap-3 max-w-xl ml-auto">
-            {moreRefs.map((img, i) => (
-              <div key={i} className="relative overflow-hidden rounded-lg shadow-soft aspect-[3/4] bg-bone">
-                <Image
-                  src={img}
-                  alt={`Tattoo reference example ${i + 4}`}
-                  fill
-                  className="object-cover object-center"
-                  sizes="(min-width: 1024px) 180px, 33vw"
-                />
-              </div>
-            ))}
+          {/* Bad reference examples — too broad */}
+          <FadeIn className="max-w-xl ml-auto">
+            <p className="text-[11px] tracking-[0.25em] uppercase text-ink/50 mb-3 flex items-center gap-2">
+              <span className="text-red-400 font-bold text-base">✕</span> Too broad — mixed styles
+            </p>
+            <div className="grid grid-cols-3 gap-3">
+              {moreRefs.map((img, i) => (
+                <div key={i} className="relative overflow-hidden rounded-lg shadow-soft aspect-[3/4] bg-bone">
+                  <Image
+                    src={img}
+                    alt={`Broad mixed reference example ${i + 4}`}
+                    fill
+                    className="object-cover object-center"
+                    sizes="(min-width: 1024px) 180px, 33vw"
+                  />
+                  <div className="absolute top-2 left-2 w-6 h-6 rounded-full bg-red-400/90 flex items-center justify-center text-white font-bold text-xs">✕</div>
+                </div>
+              ))}
+            </div>
           </FadeIn>
         </div>
       </section>
@@ -310,8 +316,8 @@ export default function BookPage() {
             <h2
               className="text-sage text-center lg:text-right leading-[1.1]"
               style={{
-                fontFamily: "var(--font-androgy), serif",
-                fontWeight: "normal",
+                fontFamily: "var(--font-cormorant), serif",
+                fontWeight: 600,
                 fontSize: "clamp(2.5rem, 5vw, 4.5rem)",
               }}
             >

@@ -11,7 +11,7 @@ import { contact } from "@/lib/contact";
 import LocaleToggle from "./LocaleToggle";
 import { WhatsAppIcon } from "./WhatsAppFloat";
 
-type NavKey = "home" | "about" | "portfolio" | "information" | "contact";
+type NavKey = "home" | "about" | "portfolio" | "aftercare" | "information" | "contact";
 type NavItem = {
   href: string;
   key: NavKey;
@@ -22,13 +22,14 @@ const navItems: NavItem[] = [
   { href: "/", key: "home" },
   { href: "/about", key: "about" },
   { href: "/portfolio", key: "portfolio" },
+  { href: "/information/aftercare", key: "aftercare" },
   {
     href: "/information",
     key: "information",
     children: [
+      { href: "/information/book", label: "How to Book" },
       { href: "/information/faq", label: "FAQ" },
       { href: "/information/terms", label: "Terms & Conditions" },
-      { href: "/information/book", label: "How to Book" },
     ],
   },
   { href: "/contact", key: "contact" },

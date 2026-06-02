@@ -5,22 +5,22 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { useLocale } from "@/lib/i18n";
 
-import birdImg from "@/src/assets/images/colourrealismbirdtattoo.JPG";
-import dogsImg from "@/src/assets/images/microcolourrealismtattoodogs.JPG";
-import tigerImg from "@/src/assets/images/blackandgreyealismtattoo-tiger.JPG";
+import birdImg      from "@/src/assets/images/colourrealismbirdtattoo.JPG";
+import dogsImg      from "@/src/assets/images/microcolourrealismtattoodogs.JPG";
+import tigerImg     from "@/src/assets/images/blackandgreyealismtattoo-tiger.JPG";
 import botanicalImg from "@/src/assets/images/colourrealismbotanicalpoppytattoo.JPG";
-import portraitImg from "@/src/assets/images/blackandgreyrealismportraittattoo.JPG";
-import flowerImg from "@/src/assets/images/botanicaldandilionflowertattoo.jpeg";
+import portraitImg  from "@/src/assets/images/blackandgreyrealismportraittattoo.JPG";
+import flowerImg    from "@/src/assets/images/botanicaldandilionflowertattoo.jpeg";
 
 type CategoryKey = "animalPet" | "microRealism" | "blackGrey" | "botanical" | "portrait";
-const categories: CategoryKey[] = ["animalPet", "microRealism", "blackGrey", "botanical", "portrait"];
-const gridImages: { img: StaticImageData; alt: string }[] = [
-  { img: birdImg, alt: "Magpie bird tattoo" },
-  { img: dogsImg, alt: "Three dogs portrait tattoo" },
-  { img: tigerImg, alt: "Black and grey tiger tattoo" },
-  { img: botanicalImg, alt: "Marigold and bee botanical tattoo" },
-  { img: portraitImg, alt: "Black and grey portrait tattoo" },
-  { img: flowerImg, alt: "Single flower line tattoo" },
+
+const gridItems: { img: StaticImageData; alt: string; cat: CategoryKey }[] = [
+  { img: birdImg,      alt: "Colour realism bird tattoo",              cat: "animalPet" },
+  { img: dogsImg,      alt: "Micro realism dogs portrait tattoo",      cat: "microRealism" },
+  { img: tigerImg,     alt: "Black and grey tiger tattoo",             cat: "blackGrey" },
+  { img: botanicalImg, alt: "Colour botanical poppy tattoo",           cat: "botanical" },
+  { img: portraitImg,  alt: "Black and grey portrait tattoo",          cat: "portrait" },
+  { img: flowerImg,    alt: "Botanical dandelion flower tattoo",       cat: "botanical" },
 ];
 
 const ease = [0.22, 1, 0.36, 1] as const;
@@ -32,7 +32,7 @@ export default function PortfolioSection() {
     <section className="bg-white">
       <div className="max-w-6xl mx-auto px-6 py-16 md:py-24">
         <motion.h2
-          className="text-center text-sage leading-none"
+          className="text-center text-sage leading-none mb-10 md:mb-12"
           style={{ fontFamily: "var(--font-androgy), serif", fontWeight: "normal", fontSize: "clamp(2.25rem, 5vw, 4rem)" }}
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -42,54 +42,58 @@ export default function PortfolioSection() {
           {t("portfolio.heading")}
         </motion.h2>
 
-        <div className="mt-10 md:mt-12 grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-10 lg:gap-14 items-start">
+        <motion.div
+          className="grid grid-cols-2 sm:grid-cols-3 gap-4 md:gap-6"
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-60px" }}
+          variants={{ hidden: {}, show: { transition: { staggerChildren: 0.08 } } }}
+        >
+          {gridItems.map((item) => (
+            <motion.div
+              key={item.alt}
+              variants={{ hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0, transition: { duration: 0.55, ease } } }}
+            >
+              <Link href={`/portfolio?cat=${item.cat}`} className="group block">
+                <motion.div
+                  className="relative overflow-hidden rounded-lg shadow-soft aspect-[3/4] bg-bone"
+                  whileHover={{ scale: 1.03 }}
+                  transition={{ duration: 0.35, ease: "easeOut" }}
+                >
+                  <Image
+                    src={item.img}
+                    alt={item.alt}
+                    fill
+                    quality={88}
+                    className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                    sizes="(min-width: 1024px) 180px, (min-width: 640px) 33vw, 45vw"
+                  />
+                </motion.div>
+                <p
+                  className="mt-3 text-center text-sage leading-tight"
+                  style={{ fontFamily: "var(--font-androgy), serif", fontSize: "clamp(0.85rem, 1.5vw, 1.1rem)" }}
+                >
+                  {t(`portfolio.categories.${item.cat}`)}
+                </p>
+              </Link>
+            </motion.div>
+          ))}
+        </motion.div>
 
-          {/* Category list */}
-          <motion.ul
-            className="flex flex-col gap-3 lg:gap-4 lg:pt-2"
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true }}
-            variants={{ hidden: {}, show: { transition: { staggerChildren: 0.08 } } }}
+        <motion.div
+          className="mt-10 text-center"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+        >
+          <Link
+            href="/portfolio"
+            className="text-[11px] tracking-[0.28em] uppercase text-sage border-b border-sage/40 pb-px hover:border-sage transition-colors"
           >
-            {categories.map((cat) => (
-              <motion.li
-                key={cat}
-                variants={{ hidden: { opacity: 0, x: -16 }, show: { opacity: 1, x: 0, transition: { duration: 0.5, ease } } }}
-              >
-                <Link href="/portfolio" className="inline-block text-sage hover:text-sage-dark transition-colors" style={{ fontFamily: "var(--font-androgy), serif", fontSize: "clamp(1.1rem, 2vw, 1.6rem)", lineHeight: 1.2 }}>
-                  {t(`portfolio.categories.${cat}`)}
-                </Link>
-              </motion.li>
-            ))}
-          </motion.ul>
-
-          {/* Image grid */}
-          <motion.div
-            className="grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-4"
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, margin: "-40px" }}
-            variants={{ hidden: {}, show: { transition: { staggerChildren: 0.07 } } }}
-          >
-            {gridImages.map((item, i) => (
-              <motion.div
-                key={i}
-                variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transition: { duration: 0.5, ease } } }}
-              >
-                <Link href="/portfolio" className="group block">
-                  <motion.div
-                    className="relative aspect-[3/4] overflow-hidden rounded-lg shadow-soft bg-bone"
-                    whileHover={{ scale: 1.03 }}
-                    transition={{ duration: 0.35, ease: "easeOut" }}
-                  >
-                    <Image src={item.img} alt={item.alt} fill quality={88} className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out" sizes="(min-width: 1024px) 220px, (min-width: 640px) 33vw, 45vw" />
-                  </motion.div>
-                </Link>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
+            View full portfolio →
+          </Link>
+        </motion.div>
       </div>
     </section>
   );
