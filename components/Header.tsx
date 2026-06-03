@@ -202,7 +202,7 @@ export default function Header() {
               transition={{ duration: 0.3 }}
             />
             <motion.aside
-              className="absolute right-0 top-0 h-full w-full max-w-sm bg-cream shadow-drawer overflow-y-auto"
+              className="absolute right-0 top-0 h-full w-full max-w-sm bg-bone shadow-drawer overflow-y-auto"
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}

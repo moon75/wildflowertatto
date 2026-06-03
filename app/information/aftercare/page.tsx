@@ -204,24 +204,22 @@ export default function AftercarePage() {
               </div>
             </FadeIn>
 
-            {/* Right: risks + avoid */}
-            <div className="flex flex-col gap-10">
+            {/* Right: important information paragraphs */}
+            <div className="flex flex-col gap-6">
               <FadeIn delay={0.1}>
-                <p className="text-ink/70 text-[15px] leading-relaxed mb-5">
-                  It is important to know the potential risks involved with tattooing:
-                </p>
-                <ul className="flex flex-col gap-2 mb-6">
-                  {["Allergic reaction to tattoo pigment", "Developing scar tissue", "Infection of the tattoo"].map((risk) => (
-                    <li key={risk} className="flex items-start gap-3 text-ink/70 text-[15px]">
-                      <span className="text-sage/60 mt-1 shrink-0">—</span>
-                      {risk}
-                    </li>
+                <div className="flex flex-col gap-4">
+                  {[
+                    "Tattooing is a procedure involving puncturing the skin and may involve risks, complications, or healing reactions despite appropriate hygiene, technique, and aftercare.",
+                    "Healing results vary between individuals and may be affected by skin type, age, medications, body placement, lifestyle, sun exposure, immune response, scar tissue, aftercare, and overall skin condition.",
+                    "Dry, mature, thin, scarred, dehydrated, sun-damaged, or otherwise compromised skin may affect pigment retention, colour saturation, detail retention, healing consistency, and may increase the risk of pigment migration or blowouts.",
+                    "Certain body areas, including hands, fingers, feet, joints, ribs, and other high-movement areas, may be more prone to fading, distortion, blowouts, migration, or uneven healing.",
+                    "Once tattooing has commenced, additions, redesigns, or compositional changes may fall outside the scope of the originally approved tattoo project and may be treated as additional tattoo work.",
+                  ].map((text, i) => (
+                    <p key={i} className="flex items-start gap-3 text-ink/70 text-[15px] leading-relaxed">
+                      <span className="text-sage/60 shrink-0 mt-[3px]">—</span>
+                      {text}
+                    </p>
                   ))}
-                </ul>
-                <div className="border-l-2 border-sage/30 pl-4">
-                  <p className="text-ink/75 text-[14px] leading-relaxed">
-                    <strong className="font-normal text-ink">Important:</strong> Contact your doctor if your skin starts to become hot, painful, swollen, or hair loss occurs near the tattoo. This may mean the tattoo is infected and needs to be treated with medication.
-                  </p>
                 </div>
               </FadeIn>
 
@@ -243,6 +241,41 @@ export default function AftercarePage() {
               </FadeIn>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* ── Client Declaration ── */}
+      <section className="bg-white py-16 md:py-24">
+        <div className="max-w-4xl mx-auto px-6">
+          <FadeIn className="mb-10">
+            <h2
+              className="text-sage leading-[1.05]"
+              style={{ fontFamily: "var(--font-androgy), serif", fontWeight: "normal", fontSize: "clamp(2rem, 4.5vw, 3.5rem)" }}
+            >
+              Client Declaration
+            </h2>
+            <div className="mt-3 h-px w-20 bg-sage/30" />
+          </FadeIn>
+
+          <FadeInStagger className="flex flex-col gap-4" stagger={0.07}>
+            {[
+              "I have carefully considered and voluntarily chosen to receive this tattoo.",
+              "I have been informed in writing about the possible risks of infection, healing complications, allergic reactions, and other risks associated with tattooing (see information below).",
+              "I have received written aftercare instructions for my tattoo.",
+              "I am not currently under the influence of alcohol, drugs, medication, or other substances that may impair my judgement or ability to provide informed consent.",
+              "I understand that having one or more of the following conditions may increase the risks associated with tattooing, including bleeding, infection, allergic reactions, delayed healing, scarring, or unsatisfactory healed results, and may require additional caution, postponement of the procedure, or medical advice prior to tattooing: Haemophilia or other blood clotting disorders, Chronic skin conditions, Contact allergies or allergic reactions, Diabetes, Immune disorders or autoimmune conditions, Heart or cardiovascular conditions.",
+              "I understand that tattooing while using the following medication may increase the risk of complications, poor healing, or infection and may require postponement of the procedure: Antibiotics, Blood thinning medication, Immunosuppressant medication, Accutane / isotretinoin, Chemotherapy or cancer treatment, Other medication affecting healing or immune response. I understand that tattooing during pregnancy is not permitted due to potential health and infection-related risks.",
+              "I understand that touch-ups are generally included as part of the tattoo service unless otherwise stated. Due to natural healing variations, a touch-up may sometimes be necessary to achieve the intended healed result.",
+              "I understand that I am responsible for carefully reviewing and approving the spelling, design, placement, sizing, and intended meaning of the tattoo before tattooing.",
+            ].map((text, i) => (
+              <FadeInItem key={i}>
+                <div className="flex items-start gap-4 py-4 border-b border-sage/10 last:border-0">
+                  <span className="w-2 h-2 rounded-full bg-sage/50 shrink-0 mt-[6px]" />
+                  <p className="text-ink/70 text-[15px] leading-relaxed">{text}</p>
+                </div>
+              </FadeInItem>
+            ))}
+          </FadeInStagger>
         </div>
       </section>
 
