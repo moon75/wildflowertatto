@@ -2,14 +2,27 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 import limeTattoo from "@/src/assets/images/realismcolourlimebotanicaltatoo.JPG";
 import dogsTattoo from "@/src/assets/images/microcolourrealismtattoodogs.JPG";
 import { useLocale } from "@/lib/i18n";
+import { sanityClient } from "@/lib/sanity";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
 export default function AboutSection() {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
+  const [cms, setCms] = useState<any>(null);
+
+  useEffect(() => {
+    sanityClient.fetch(`*[_type == "aboutSection"][0]`).then(setCms);
+  }, []);
+
+  const lang = locale === "nl" ? "nl" : "en";
+  const p1 = cms ? cms[`p1_${lang}`] : t("about.p1");
+  const p2 = cms ? cms[`p2_${lang}`] : t("about.p2");
+  const p3 = cms ? cms[`p3_${lang}`] : t("about.p3");
+  const heading = cms ? cms[`heading_${lang}`] : t("about.heading");
 
   return (
     <section className="bg-bone">
@@ -61,11 +74,11 @@ export default function AboutSection() {
               viewport={{ once: true }}
               transition={{ duration: 0.6, ease }}
             >
-              {t("about.heading")}
+              {heading}
             </motion.h2>
 
             <div className="space-y-5 text-ink/80 text-base md:text-[17px] leading-relaxed font-sans">
-              {[t("about.p1"), t("about.p2"), t("about.p3")].map((p, i) => (
+              {[p1, p2, p3].map((p, i) => (
                 <motion.p
                   key={i}
                   initial={{ opacity: 0, y: 20 }}

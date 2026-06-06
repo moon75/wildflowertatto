@@ -1,10 +1,12 @@
 "use client";
 
 import Image from "next/image";
+import { useState, useEffect } from "react";
 import { useLocale } from "@/lib/i18n";
 import { contact } from "@/lib/contact";
 import { motion } from "framer-motion";
 import { FadeIn, FadeInStagger, FadeInItem } from "@/components/ui/FadeIn";
+import { sanityClient } from "@/lib/sanity";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -26,7 +28,18 @@ const wrongPhotos = [placement1, placement2];
 const rightPhotos = [placement3, placement4];
 
 export default function BookPage() {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
+  const [cms, setCms] = useState<any>(null);
+
+  useEffect(() => {
+    sanityClient.fetch(`*[_type == "bookPage"][0]{ steps }`).then(setCms);
+  }, []);
+
+  const lang = locale === "nl" ? "nl" : "en";
+  const step = (n: number, field: "heading" | "text") => {
+    if (cms?.steps?.[n - 1]) return cms.steps[n - 1][`${field}_${lang}`] || cms.steps[n - 1][`${field}_en`];
+    return t(`book.step${n}${field === "heading" ? "Heading" : "Text"}`);
+  };
 
   return (
     <>
@@ -68,7 +81,7 @@ export default function BookPage() {
                   letterSpacing: "0.01em",
                 }}
               >
-                {t("book.step1Heading")}
+                {step(1, "heading")}
               </h2>
               <p className="text-ink/75 leading-relaxed text-[15px] mb-4">
                 {t("book.step1Intro")}
@@ -119,7 +132,7 @@ export default function BookPage() {
                   letterSpacing: "0.01em",
                 }}
               >
-                {t("book.step2Heading")}
+                {step(2, "heading")}
               </h2>
               <p className="text-ink/75 leading-relaxed text-[15px] mb-5">
                 {t("book.step2Text")}
@@ -278,7 +291,7 @@ export default function BookPage() {
                   letterSpacing: "0.01em",
                 }}
               >
-                {t("book.step4Heading")}
+                {step(4, "heading")}
               </h2>
               <p className="text-ink/75 leading-relaxed text-[15px]">
                 {t("book.step4Text")}
@@ -296,7 +309,7 @@ export default function BookPage() {
                   letterSpacing: "0.01em",
                 }}
               >
-                {t("book.step5Heading")}
+                {step(5, "heading")}
               </h2>
               <p className="text-ink/75 leading-relaxed text-[15px] mb-4">
                 {t("book.step5Text")}

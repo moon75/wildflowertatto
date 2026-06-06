@@ -1,40 +1,58 @@
 "use client";
 
 import Image from "next/image";
+import { useState, useEffect } from "react";
 import tattoocolours from "@/src/assets/images/tattoocolours.jpeg";
 import { useLocale } from "@/lib/i18n";
 import { motion } from "framer-motion";
 import { FadeIn, FadeInStagger, FadeInItem } from "@/components/ui/FadeIn";
+import { sanityClient } from "@/lib/sanity";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
-type QAPair = {
-  q: string;
-  a: string;
-  id: string;
-};
+type QAPair = { q: string; a: string; id: string };
 
 export default function FaqPage() {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
+  const [cms, setCms] = useState<any>(null);
 
-  const bookingQA: QAPair[] = [
-    { id: "q1", q: t("faq.q1"), a: t("faq.a1") },
-    { id: "q2", q: t("faq.q2"), a: t("faq.a2") },
-    { id: "q3", q: t("faq.q3"), a: t("faq.a3") },
-    { id: "q4", q: t("faq.q4"), a: t("faq.a4") },
-    { id: "q5", q: t("faq.q5"), a: t("faq.a5") },
-    { id: "q6", q: t("faq.q6"), a: t("faq.a6") },
-  ];
+  useEffect(() => {
+    sanityClient.fetch(`*[_type == "faqPage"][0]{ faqs }`).then(setCms);
+  }, []);
 
-  const generalQA: QAPair[] = [
-    { id: "q7",  q: t("faq.q7"),  a: t("faq.a7")  },
-    { id: "q8",  q: t("faq.q8"),  a: t("faq.a8")  },
-    { id: "q9",  q: t("faq.q9"),  a: t("faq.a9")  },
-    { id: "q10", q: t("faq.q10"), a: t("faq.a10") },
-    { id: "q11", q: t("faq.q11"), a: t("faq.a11") },
-    { id: "q12", q: t("faq.q12"), a: t("faq.a12") },
-    { id: "q13", q: t("faq.q13"), a: t("faq.a13") },
-  ];
+  const lang = locale === "nl" ? "nl" : "en";
+
+  const toQA = (item: any, idx: number): QAPair => ({
+    id: `q${idx + 1}`,
+    q: item[`question_${lang}`] || item.question_en,
+    a: item[`answer_${lang}`] || item.answer_en,
+  });
+
+  const allFaqs: QAPair[] = cms?.faqs
+    ? cms.faqs.map(toQA)
+    : [
+        { id: "q1",  q: t("faq.q1"),  a: t("faq.a1")  },
+        { id: "q2",  q: t("faq.q2"),  a: t("faq.a2")  },
+        { id: "q3",  q: t("faq.q3"),  a: t("faq.a3")  },
+        { id: "q4",  q: t("faq.q4"),  a: t("faq.a4")  },
+        { id: "q5",  q: t("faq.q5"),  a: t("faq.a5")  },
+        { id: "q6",  q: t("faq.q6"),  a: t("faq.a6")  },
+        { id: "q7",  q: t("faq.q7"),  a: t("faq.a7")  },
+        { id: "q8",  q: t("faq.q8"),  a: t("faq.a8")  },
+        { id: "q9",  q: t("faq.q9"),  a: t("faq.a9")  },
+        { id: "q10", q: t("faq.q10"), a: t("faq.a10") },
+        { id: "q11", q: t("faq.q11"), a: t("faq.a11") },
+        { id: "q12", q: t("faq.q12"), a: t("faq.a12") },
+        { id: "q13", q: t("faq.q13"), a: t("faq.a13") },
+      ];
+
+  const bookingQA = cms?.faqs
+    ? allFaqs.filter((_, i) => cms.faqs[i]?.category === "Booking")
+    : allFaqs.slice(0, 6);
+
+  const generalQA = cms?.faqs
+    ? allFaqs.filter((_, i) => cms.faqs[i]?.category === "General")
+    : allFaqs.slice(6);
 
   return (
     <>

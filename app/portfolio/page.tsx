@@ -1,23 +1,12 @@
 "use client";
 
-import Image, { type StaticImageData } from "next/image";
+import Image from "next/image";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLocale } from "@/lib/i18n";
 import { contact } from "@/lib/contact";
-
-import portraitImg    from "@/src/assets/images/blackandgreyrealismportraittattoo.JPG";
-import poppyImg       from "@/src/assets/images/colourrealismbotanicalpoppytattoo.JPG";
-import limeImg        from "@/src/assets/images/realismcolourlimebotanicaltatoo.JPG";
-import dandelionImg   from "@/src/assets/images/botanicaldandilionflowertattoo.jpeg";
-import cherryImg      from "@/src/assets/images/colourcherrytattoorealism.jpeg";
-import daffodilImg    from "@/src/assets/images/daffodilcolourealismtattoo.jpeg";
-import tigerImg       from "@/src/assets/images/blackandgreyealismtattoo-tiger.JPG";
-import feminineImg    from "@/src/assets/images/colourfulfemininebotanicaltattoo.jpeg";
-import birdImg        from "@/src/assets/images/colourrealismbirdtattoo.JPG";
-import dogsImg        from "@/src/assets/images/microcolourrealismtattoodogs.JPG";
-import coverupImg     from "@/src/assets/images/coveruptattoo.jpeg";
-import healedImg      from "@/src/assets/images/healedmicrocolourrealismtattoo.JPG";
+import { sanityClient } from "@/lib/sanity";
+import { urlFor } from "@/lib/sanityImage";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -26,38 +15,31 @@ type Filter = "all" | Category;
 
 const validFilters: Filter[] = ["all", "animalPet", "microRealism", "blackGrey", "botanical", "portrait", "coverup", "healed"];
 
-interface Item {
-  img: StaticImageData;
+interface SanityImage {
+  _id: string;
   alt: string;
   categories: Category[];
+  order: number;
+  image: any;
 }
 
-const items: Item[] = [
-  { img: birdImg,      alt: "Colour realism magpie bird tattoo",         categories: ["animalPet"] },
-  { img: poppyImg,     alt: "Colour botanical poppy tattoo",              categories: ["botanical", "healed"] },
-  { img: dogsImg,      alt: "Micro realism three dogs portrait tattoo",   categories: ["microRealism", "animalPet"] },
-  { img: feminineImg,  alt: "Colourful feminine botanical tattoo",        categories: ["botanical", "healed"] },
-  { img: tigerImg,     alt: "Black and grey realism tiger tattoo",        categories: ["blackGrey", "animalPet"] },
-  { img: limeImg,      alt: "Colour realism lime botanical tattoo",       categories: ["botanical", "healed"] },
-  { img: portraitImg,  alt: "Black and grey realism portrait tattoo",     categories: ["portrait", "blackGrey"] },
-  { img: cherryImg,    alt: "Colour cherry realism tattoo",               categories: ["botanical", "healed"] },
-  { img: healedImg,    alt: "Healed micro colour realism tattoo",         categories: ["microRealism", "healed"] },
-  { img: dandelionImg, alt: "Botanical dandelion flower tattoo",          categories: ["botanical", "healed"] },
-  { img: daffodilImg,  alt: "Colour daffodil realism tattoo",             categories: ["botanical", "healed"] },
-  { img: coverupImg,   alt: "Cover-up tattoo rework",                     categories: ["coverup", "blackGrey"] },
-];
+const QUERY = `*[_type == "portfolioImage"] | order(order asc) {
+  _id, alt, categories, order, image
+}`;
 
 export default function PortfolioPage() {
   const { t } = useLocale();
   const [active, setActive] = useState<Filter>("all");
+  const [items, setItems] = useState<SanityImage[]>([]);
 
-  // Read initial filter from URL on mount
+  useEffect(() => {
+    sanityClient.fetch<SanityImage[]>(QUERY).then(setItems);
+  }, []);
+
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const cat = params.get("cat") as Filter | null;
-    if (cat && validFilters.includes(cat)) {
-      setActive(cat);
-    }
+    if (cat && validFilters.includes(cat)) setActive(cat);
   }, []);
 
   const filters: { key: Filter; label: string }[] = [
@@ -73,7 +55,7 @@ export default function PortfolioPage() {
 
   const visible = active === "all"
     ? items
-    : items.filter((item) => item.categories.includes(active as Category));
+    : items.filter((item) => item.categories?.includes(active as Category));
 
   return (
     <>
@@ -82,18 +64,13 @@ export default function PortfolioPage() {
         <div className="max-w-6xl mx-auto px-6">
           <motion.h1
             className="text-sage leading-none"
-            style={{
-              fontFamily: "var(--font-androgy), serif",
-              fontWeight: "normal",
-              fontSize: "clamp(3.5rem, 9vw, 7rem)",
-            }}
+            style={{ fontFamily: "var(--font-androgy), serif", fontWeight: "normal", fontSize: "clamp(3.5rem, 9vw, 7rem)" }}
             initial={{ opacity: 0, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.75, ease }}
           >
             {t("portfolio.heading")}
           </motion.h1>
-
           <motion.p
             className="mt-4 text-ink/60 text-[15px] max-w-xl leading-relaxed"
             initial={{ opacity: 0, y: 16 }}
@@ -147,7 +124,7 @@ export default function PortfolioPage() {
             <AnimatePresence mode="popLayout">
               {visible.map((item) => (
                 <motion.div
-                  key={item.alt}
+                  key={item._id}
                   layout
                   initial={{ opacity: 0, scale: 0.96 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -155,23 +132,19 @@ export default function PortfolioPage() {
                   transition={{ duration: 0.4, ease: "easeOut" }}
                   className="break-inside-avoid mb-3 md:mb-4 overflow-hidden rounded-xl shadow-soft bg-bone group"
                 >
-                  <Image
-                    src={item.img}
+                  <img
+                    src={urlFor(item.image).width(800).auto("format").url()}
                     alt={item.alt}
                     className="w-full h-auto object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-                    sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 50vw"
+                    loading="lazy"
                   />
                 </motion.div>
               ))}
             </AnimatePresence>
           </motion.div>
 
-          {visible.length === 0 && (
-            <motion.p
-              className="text-center text-ink/40 py-20 text-sm"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-            >
+          {visible.length === 0 && items.length > 0 && (
+            <motion.p className="text-center text-ink/40 py-20 text-sm" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
               No pieces in this category yet.
             </motion.p>
           )}
@@ -183,11 +156,7 @@ export default function PortfolioPage() {
         <div className="max-w-6xl mx-auto px-6 flex flex-col items-center text-center gap-6">
           <motion.h2
             className="text-sage leading-none"
-            style={{
-              fontFamily: "var(--font-androgy), serif",
-              fontWeight: "normal",
-              fontSize: "clamp(2rem, 5vw, 3.75rem)",
-            }}
+            style={{ fontFamily: "var(--font-androgy), serif", fontWeight: "normal", fontSize: "clamp(2rem, 5vw, 3.75rem)" }}
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
