@@ -39,6 +39,23 @@ export const termsPage = defineType({
         },
       ],
     }),
+    defineField({
+      name: "doNotItems",
+      title: "Please Do Not — Items",
+      type: "array",
+      of: [
+        {
+          type: "object",
+          fields: [
+            defineField({ name: "heading_en", title: "Heading (English)", type: "string" }),
+            defineField({ name: "heading_nl", title: "Heading (Dutch)", type: "string" }),
+            defineField({ name: "text_en", title: "Text (English)", type: "text", rows: 3 }),
+            defineField({ name: "text_nl", title: "Text (Dutch)", type: "text", rows: 3 }),
+          ],
+          preview: { select: { title: "heading_en" } },
+        },
+      ],
+    }),
   ],
   preview: { select: { title: "termsPage" }, prepare: () => ({ title: "Terms & Conditions" }) },
 });

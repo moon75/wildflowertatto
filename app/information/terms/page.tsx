@@ -36,13 +36,15 @@ export default function TermsPage() {
         { title: t("terms.pol7"), text: t("terms.pol7Text") },
       ];
 
-  const doNotItems = [
-    { title: t("terms.dont1"), text: t("terms.dont1Text") },
-    { title: t("terms.dont2"), text: t("terms.dont2Text") },
-    { title: t("terms.dont3"), text: t("terms.dont3Text") },
-    { title: t("terms.dont4"), text: t("terms.dont4Text") },
-    { title: t("terms.dont5"), text: t("terms.dont5Text") },
-  ];
+  const doNotItems = cms?.doNotItems
+    ? cms.doNotItems.map((d: any) => ({ title: d[`heading_${lang}`] || d.heading_en, text: d[`text_${lang}`] || d.text_en }))
+    : [
+        { title: t("terms.dont1"), text: t("terms.dont1Text") },
+        { title: t("terms.dont2"), text: t("terms.dont2Text") },
+        { title: t("terms.dont3"), text: t("terms.dont3Text") },
+        { title: t("terms.dont4"), text: t("terms.dont4Text") },
+        { title: t("terms.dont5"), text: t("terms.dont5Text") },
+      ];
 
   const depositRules = cms?.depositRules
     ? cms.depositRules.map((d: any) => d[`rule_${lang}`])

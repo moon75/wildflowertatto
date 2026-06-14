@@ -3,16 +3,17 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useLocale } from "@/lib/i18n";
-import { contact } from "@/lib/contact";
+import { useSiteSettings } from "@/lib/useSiteSettings";
 import { WhatsAppIcon } from "./WhatsAppFloat";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
 export default function Footer() {
   const { t } = useLocale();
+  const settings = useSiteSettings();
   const year = new Date().getFullYear();
 
-  const mapSrc = `https://maps.google.com/maps?q=${encodeURIComponent(contact.mapsQuery)}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
+  const mapSrc = `https://maps.google.com/maps?q=${encodeURIComponent(settings.mapsQuery)}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
 
   return (
     <footer className="font-sans">
@@ -43,15 +44,15 @@ export default function Footer() {
                   Say hi!
                 </h3>
                 <p className="text-[15px] md:text-base text-ink/90 leading-relaxed mb-3">
-                  Feel free to reach out anytime through WhatsApp using the link below or on <strong>+31 6 36306144</strong>.
+                  Feel free to reach out anytime through WhatsApp using the link below or on <strong>{settings.phone}</strong>.
                 </p>
                 <p className="text-[15px] md:text-base text-ink/90 leading-relaxed mb-3">
-                  If WhatsApp isn&apos;t possible, you can also email me at <a href="mailto:info@wildflowertattoo.nl" className="underline">info@wildflowertattoo.nl</a>
+                  If WhatsApp isn&apos;t possible, you can also email me at <a href={`mailto:${settings.email}`} className="underline">{settings.email}</a>
                 </p>
                 <p className="text-[15px] md:text-base text-ink/90 leading-relaxed mb-5">Looking forward to hearing from you!</p>
                 <div className="flex flex-wrap items-center gap-4">
                   <motion.a
-                    href={contact.whatsappUrl}
+                    href={settings.whatsappUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-3 bg-sage-dark text-white px-5 py-2.5 rounded-md text-sm tracking-wider"
@@ -62,7 +63,7 @@ export default function Footer() {
                     <WhatsAppIcon className="h-4 w-4" />
                     Chat on WhatsApp
                   </motion.a>
-                  <a href="tel:+31636306144" className="text-ink/80 text-sm">+31 6 36306144</a>
+                  <a href={`tel:${settings.phone}`} className="text-ink/80 text-sm">{settings.phone}</a>
                 </div>
                 <p className="mt-4 text-sm text-ink/70 italic">— Lydia</p>
               </div>
@@ -98,7 +99,7 @@ export default function Footer() {
             >
               <h4 className="text-sage mb-3" style={{ fontFamily: "var(--font-catamaran), sans-serif", fontSize: "1.2rem", fontWeight: "normal" }}>{t("footer.socials")}</h4>
               <ul className="flex flex-col gap-2 text-ink/80">
-                {[{ href: contact.instagram, label: "Instagram", Icon: InstagramIcon }, { href: contact.tiktok, label: "TikTok", Icon: TikTokIcon }, { href: contact.facebook, label: "Facebook", Icon: FacebookIcon }].map(({ href, label, Icon }) => (
+                {[{ href: settings.instagram, label: "Instagram", Icon: InstagramIcon }, { href: settings.tiktok, label: "TikTok", Icon: TikTokIcon }, { href: settings.facebook, label: "Facebook", Icon: FacebookIcon }].map(({ href, label, Icon }) => (
                   <li key={label}>
                     <a href={href} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 hover:text-sage transition-colors">
                       <Icon /> {label}
@@ -115,7 +116,7 @@ export default function Footer() {
             >
               <h4 className="text-sage mb-3" style={{ fontFamily: "var(--font-catamaran), sans-serif", fontSize: "1.2rem", fontWeight: "normal" }}>{t("footer.location")}</h4>
               <address className="not-italic text-ink/80 leading-relaxed">
-                {contact.studio}<br />{contact.addressLine1}<br />{contact.addressLine2}<br />{contact.addressLine3}
+                {settings.studio}<br />{settings.addressLine1}<br />{settings.addressLine2}<br />{settings.addressLine3}
               </address>
             </motion.div>
 

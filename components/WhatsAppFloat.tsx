@@ -1,14 +1,15 @@
 "use client";
 
 import { useLocale } from "@/lib/i18n";
-import { contact } from "@/lib/contact";
+import { useSiteSettings } from "@/lib/useSiteSettings";
 
 export default function WhatsAppFloat() {
   const { t } = useLocale();
+  const settings = useSiteSettings();
 
   return (
     <a
-      href={contact.whatsappUrl}
+      href={settings.whatsappUrl}
       target="_blank"
       rel="noopener noreferrer"
       aria-label={t("cta.whatsappLong")}

@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { FadeIn, FadeInStagger, FadeInItem } from "@/components/ui/FadeIn";
-import { contact } from "@/lib/contact";
+import { useSiteSettings } from "@/lib/useSiteSettings";
 import { sanityClient } from "@/lib/sanity";
 
 import heroImg     from "@/src/assets/images/wildflowertattoolydiaszubert.JPG";
@@ -65,6 +65,7 @@ const schedule = [
 ];
 
 export default function AftercarePage() {
+  const settings = useSiteSettings();
   const [cms, setCms] = useState<any>(null);
 
   useEffect(() => {
@@ -240,13 +241,7 @@ export default function AftercarePage() {
             <div className="flex flex-col gap-6">
               <FadeIn delay={0.1}>
                 <div className="flex flex-col gap-4">
-                  {[
-                    "Tattooing is a procedure involving puncturing the skin and may involve risks, complications, or healing reactions despite appropriate hygiene, technique, and aftercare.",
-                    "Healing results vary between individuals and may be affected by skin type, age, medications, body placement, lifestyle, sun exposure, immune response, scar tissue, aftercare, and overall skin condition.",
-                    "Dry, mature, thin, scarred, dehydrated, sun-damaged, or otherwise compromised skin may affect pigment retention, colour saturation, detail retention, healing consistency, and may increase the risk of pigment migration or blowouts.",
-                    "Certain body areas, including hands, fingers, feet, joints, ribs, and other high-movement areas, may be more prone to fading, distortion, blowouts, migration, or uneven healing.",
-                    "Once tattooing has commenced, additions, redesigns, or compositional changes may fall outside the scope of the originally approved tattoo project and may be treated as additional tattoo work.",
-                  ].map((text, i) => (
+                  {importantInfo.map((text: string, i: number) => (
                     <p key={i} className="flex items-start gap-3 text-ink/70 text-[15px] leading-relaxed">
                       <span className="text-sage/60 shrink-0 mt-[3px]">—</span>
                       {text}
@@ -290,16 +285,7 @@ export default function AftercarePage() {
           </FadeIn>
 
           <FadeInStagger className="flex flex-col gap-4" stagger={0.07}>
-            {[
-              "I have carefully considered and voluntarily chosen to receive this tattoo.",
-              "I have been informed in writing about the possible risks of infection, healing complications, allergic reactions, and other risks associated with tattooing (see information below).",
-              "I have received written aftercare instructions for my tattoo.",
-              "I am not currently under the influence of alcohol, drugs, medication, or other substances that may impair my judgement or ability to provide informed consent.",
-              "I understand that having one or more of the following conditions may increase the risks associated with tattooing, including bleeding, infection, allergic reactions, delayed healing, scarring, or unsatisfactory healed results, and may require additional caution, postponement of the procedure, or medical advice prior to tattooing: Haemophilia or other blood clotting disorders, Chronic skin conditions, Contact allergies or allergic reactions, Diabetes, Immune disorders or autoimmune conditions, Heart or cardiovascular conditions.",
-              "I understand that tattooing while using the following medication may increase the risk of complications, poor healing, or infection and may require postponement of the procedure: Antibiotics, Blood thinning medication, Immunosuppressant medication, Accutane / isotretinoin, Chemotherapy or cancer treatment, Other medication affecting healing or immune response. I understand that tattooing during pregnancy is not permitted due to potential health and infection-related risks.",
-              "I understand that touch-ups are generally included as part of the tattoo service unless otherwise stated. Due to natural healing variations, a touch-up may sometimes be necessary to achieve the intended healed result.",
-              "I understand that I am responsible for carefully reviewing and approving the spelling, design, placement, sizing, and intended meaning of the tattoo before tattooing.",
-            ].map((text, i) => (
+            {clientDeclaration.map((text: string, i: number) => (
               <FadeInItem key={i}>
                 <div className="flex items-start gap-4 py-4 border-b border-sage/10 last:border-0">
                   <span className="w-2 h-2 rounded-full bg-sage/50 shrink-0 mt-[6px]" />
@@ -365,18 +351,18 @@ export default function AftercarePage() {
                 className="text-sage mb-3"
                 style={{ fontFamily: "var(--font-cormorant), serif", fontWeight: 600, fontSize: "1.35rem" }}
               >
-                {contact.studio}
+                {settings.studio}
               </h3>
               <address className="not-italic text-ink/75 text-[15px] leading-relaxed mb-5">
-                {contact.addressLine1}<br />
-                {contact.addressLine2}, {contact.addressLine3}<br />
+                {settings.addressLine1}<br />
+                {settings.addressLine2}, {settings.addressLine3}<br />
                 Netherlands
               </address>
               <p className="text-ink/70 text-[15px] leading-relaxed mb-4">
                 Sapphire Ink is just a 5 minute walk from Delft Central Station — right in front of the HEMA in the city centre. I strongly recommend coming by public transport as parking in Delft is expensive and fines are strictly enforced.
               </p>
               <a
-                href={`https://maps.google.com/maps?q=${encodeURIComponent(contact.mapsQuery)}`}
+                href={`https://maps.google.com/maps?q=${encodeURIComponent(settings.mapsQuery)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-block text-[11px] tracking-[0.22em] uppercase text-sage border-b border-sage/40 pb-px hover:border-sage transition-colors"
@@ -409,7 +395,7 @@ export default function AftercarePage() {
             <p className="text-ink/55 text-[15px] leading-relaxed">
               Any questions about preparation or aftercare?{" "}
               <a
-                href={contact.whatsappUrl}
+                href={settings.whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-sage underline underline-offset-2 hover:text-sage-dark transition-colors"

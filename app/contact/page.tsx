@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { contact } from "@/lib/contact";
+import { useSiteSettings } from "@/lib/useSiteSettings";
 import { WhatsAppIcon } from "@/components/WhatsAppFloat";
 import { FadeIn } from "@/components/ui/FadeIn";
 
@@ -10,6 +10,7 @@ const ease = [0.22, 1, 0.36, 1] as const;
 
 
 export default function ContactPage() {
+  const settings = useSiteSettings();
   const [fields, setFields] = useState({ name: "", email: "", idea: "", message: "" });
   const [sent, setSent] = useState(false);
 
@@ -27,7 +28,7 @@ export default function ContactPage() {
     ]
       .filter(Boolean)
       .join("\n");
-    window.open(`mailto:${contact.email}?subject=Tattoo enquiry from ${encodeURIComponent(fields.name)}&body=${encodeURIComponent(body)}`);
+    window.open(`mailto:${settings.email}?subject=Tattoo enquiry from ${encodeURIComponent(fields.name)}&body=${encodeURIComponent(body)}`);
     setSent(true);
   }
 
@@ -130,7 +131,7 @@ export default function ContactPage() {
               <div className="bg-sage/8 rounded-xl p-6 flex flex-col gap-3 border border-sage/15">
                 <p className="text-[11px] tracking-[0.25em] uppercase text-sage/70">Fastest response</p>
                 <a
-                  href={contact.whatsappUrl}
+                  href={settings.whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-3 bg-sage text-white text-[11px] tracking-[0.22em] uppercase px-5 py-3 rounded-md hover:bg-sage-dark transition-colors w-fit"
@@ -138,26 +139,26 @@ export default function ContactPage() {
                   <WhatsAppIcon className="h-4 w-4" />
                   Message on WhatsApp
                 </a>
-                <p className="text-ink/50 text-[13px]">{contact.phone}</p>
+                <p className="text-ink/50 text-[13px]">{settings.phone}</p>
               </div>
 
               {/* Email */}
               <InfoBlock label="Email">
-                <a href={`mailto:${contact.email}`} className="text-ink/75 hover:text-sage transition-colors text-[15px]">
-                  {contact.email}
+                <a href={`mailto:${settings.email}`} className="text-ink/75 hover:text-sage transition-colors text-[15px]">
+                  {settings.email}
                 </a>
               </InfoBlock>
 
               {/* Address */}
               <InfoBlock label="Studio">
                 <address className="not-italic text-ink/75 text-[15px] leading-relaxed">
-                  <strong className="text-ink/90 font-normal">{contact.studio}</strong><br />
-                  {contact.addressLine1}<br />
-                  {contact.addressLine2}, {contact.addressLine3}<br />
+                  <strong className="text-ink/90 font-normal">{settings.studio}</strong><br />
+                  {settings.addressLine1}<br />
+                  {settings.addressLine2}, {settings.addressLine3}<br />
                   Netherlands
                 </address>
                 <a
-                  href={`https://maps.google.com/maps?q=${encodeURIComponent(contact.mapsQuery)}`}
+                  href={`https://maps.google.com/maps?q=${encodeURIComponent(settings.mapsQuery)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="mt-2 inline-block text-[11px] tracking-[0.2em] uppercase text-sage border-b border-sage/40 pb-px hover:border-sage transition-colors"
@@ -178,9 +179,9 @@ export default function ContactPage() {
               <InfoBlock label="Follow">
                 <div className="flex flex-col gap-2.5">
                   {[
-                    { href: contact.instagram, label: "Instagram", Icon: InstagramIcon },
-                    { href: contact.tiktok,    label: "TikTok",    Icon: TikTokIcon },
-                    { href: contact.facebook,  label: "Facebook",  Icon: FacebookIcon },
+                    { href: settings.instagram, label: "Instagram", Icon: InstagramIcon },
+                    { href: settings.tiktok,    label: "TikTok",    Icon: TikTokIcon },
+                    { href: settings.facebook,  label: "Facebook",  Icon: FacebookIcon },
                   ].map(({ href, label, Icon }) => (
                     <a
                       key={label}
