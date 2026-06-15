@@ -44,17 +44,7 @@ export default function PortfolioSection() {
       .fetch<SanityItem[]>(
         `*[_type == "portfolioImage" && featured == true] | order(order asc) { _id, alt, categories, image }`
       )
-      .then((data) => {
-        // Show one image per category so the home preview has variety
-        const seen = new Set<string>();
-        const deduped = data.filter((item) => {
-          const cat = item.categories?.[0];
-          if (!cat || seen.has(cat)) return false;
-          seen.add(cat);
-          return true;
-        });
-        setSanityItems(deduped);
-      })
+      .then(setSanityItems)
       .catch(() => {});
   }, []);
 
