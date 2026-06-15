@@ -124,10 +124,9 @@ export default function HealedTattoosSection() {
 
           <div
             ref={scrollerRef}
-            className="overflow-x-auto snap-x snap-mandatory flex gap-4 px-14 md:px-20 py-2"
+            className="hide-scrollbar overflow-x-auto snap-x snap-mandatory flex gap-4 px-14 md:px-20 py-2"
             style={{ scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch" } as React.CSSProperties}
           >
-            <style jsx>{`div::-webkit-scrollbar { display: none; }`}</style>
             {slides.map((slide, i) => (
               <Link
                 key={i}

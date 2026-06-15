@@ -61,6 +61,7 @@ export const dictionary = {
         blackGrey: "Black & grey tattoos",
         botanical: "Botanical tattoos",
         portrait: "Portrait tattoos",
+        healed: "Healed tattoos",
       },
     },
     faq: {
@@ -235,6 +236,7 @@ export const dictionary = {
         blackGrey: "Zwart-wit tattoos",
         botanical: "Botanische tattoos",
         portrait: "Portret tattoos",
+        healed: "Geheelde tattoos",
       },
     },
     faq: {

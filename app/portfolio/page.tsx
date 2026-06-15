@@ -7,6 +7,21 @@ import { useLocale } from "@/lib/i18n";
 import { contact } from "@/lib/contact";
 import { sanityClient } from "@/lib/sanity";
 import { urlFor } from "@/lib/sanityImage";
+import type { StaticImageData } from "next/image";
+
+import birdImg        from "@/src/assets/images/colourrealismbirdtattoo.JPG";
+import dogsImg        from "@/src/assets/images/microcolourrealismtattoodogs.JPG";
+import tigerImg       from "@/src/assets/images/blackandgreyealismtattoo-tiger.JPG";
+import botanicalImg   from "@/src/assets/images/colourrealismbotanicalpoppytattoo.JPG";
+import portraitImg    from "@/src/assets/images/blackandgreyrealismportraittattoo.JPG";
+import flowerImg      from "@/src/assets/images/botanicaldandilionflowertattoo.jpeg";
+import limeImg        from "@/src/assets/images/realismcolourlimebotanicaltatoo.JPG";
+import cherryImg      from "@/src/assets/images/colourcherrytattoorealism.jpeg";
+import daffodilImg    from "@/src/assets/images/daffodilcolourealismtattoo.jpeg";
+import healedImg      from "@/src/assets/images/healedmicrocolourrealismtattoo.JPG";
+import femBotImg      from "@/src/assets/images/colourfulfemininebotanicaltattoo.jpeg";
+import poppyImg       from "@/src/assets/images/poppytattooexample1.jpeg";
+import coverupImg     from "@/src/assets/images/coveruptattoo.jpeg";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -23,6 +38,30 @@ interface SanityImage {
   image: any;
 }
 
+interface StaticItem {
+  _id: string;
+  alt: string;
+  categories: Category[];
+  order: number;
+  staticSrc: StaticImageData;
+}
+
+const staticFallback: StaticItem[] = [
+  { _id: "s1",  alt: "Colour realism bird tattoo",           categories: ["animalPet"],   order: 1,  staticSrc: birdImg },
+  { _id: "s2",  alt: "Micro realism dogs portrait tattoo",   categories: ["microRealism"],order: 2,  staticSrc: dogsImg },
+  { _id: "s3",  alt: "Black and grey tiger tattoo",          categories: ["blackGrey"],   order: 3,  staticSrc: tigerImg },
+  { _id: "s4",  alt: "Colour botanical poppy tattoo",        categories: ["botanical"],   order: 4,  staticSrc: botanicalImg },
+  { _id: "s5",  alt: "Black and grey portrait tattoo",       categories: ["portrait"],    order: 5,  staticSrc: portraitImg },
+  { _id: "s6",  alt: "Botanical dandelion flower tattoo",    categories: ["healed"],      order: 6,  staticSrc: flowerImg },
+  { _id: "s7",  alt: "Colour realism lime botanical tattoo", categories: ["botanical"],   order: 7,  staticSrc: limeImg },
+  { _id: "s8",  alt: "Colour cherry realism tattoo",         categories: ["healed"],      order: 8,  staticSrc: cherryImg },
+  { _id: "s9",  alt: "Daffodil colour realism tattoo",       categories: ["botanical"],   order: 9,  staticSrc: daffodilImg },
+  { _id: "s10", alt: "Healed micro colour realism tattoo",   categories: ["healed"],      order: 10, staticSrc: healedImg },
+  { _id: "s11", alt: "Colourful feminine botanical tattoo",  categories: ["botanical"],   order: 11, staticSrc: femBotImg },
+  { _id: "s12", alt: "Poppy tattoo example",                 categories: ["botanical"],   order: 12, staticSrc: poppyImg },
+  { _id: "s13", alt: "Cover up tattoo",                      categories: ["coverup"],     order: 13, staticSrc: coverupImg },
+];
+
 const QUERY = `*[_type == "portfolioImage"] | order(order asc) {
   _id, alt, categories, order, image
 }`;
@@ -33,7 +72,7 @@ export default function PortfolioPage() {
   const [items, setItems] = useState<SanityImage[]>([]);
 
   useEffect(() => {
-    sanityClient.fetch<SanityImage[]>(QUERY).then(setItems);
+    sanityClient.fetch<SanityImage[]>(QUERY).then(setItems).catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -53,9 +92,11 @@ export default function PortfolioPage() {
     { key: "healed",       label: "Healed" },
   ];
 
+  const useSanity = items.length > 0;
+  const displayItems = useSanity ? items : staticFallback;
   const visible = active === "all"
-    ? items
-    : items.filter((item) => item.categories?.includes(active as Category));
+    ? displayItems
+    : displayItems.filter((item) => item.categories?.includes(active as Category));
 
   return (
     <>
@@ -132,18 +173,27 @@ export default function PortfolioPage() {
                   transition={{ duration: 0.4, ease: "easeOut" }}
                   className="break-inside-avoid mb-3 md:mb-4 overflow-hidden rounded-xl shadow-soft bg-bone group"
                 >
-                  <img
-                    src={urlFor(item.image).width(800).auto("format").url()}
-                    alt={item.alt}
-                    className="w-full h-auto object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-                    loading="lazy"
-                  />
+                  {"staticSrc" in item ? (
+                    <Image
+                      src={(item as StaticItem).staticSrc}
+                      alt={item.alt}
+                      className="w-full h-auto object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                      sizes="(min-width: 1024px) 33vw, 50vw"
+                    />
+                  ) : (
+                    <img
+                      src={urlFor((item as SanityImage).image).width(800).auto("format").url()}
+                      alt={item.alt}
+                      className="w-full h-auto object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                      loading="lazy"
+                    />
+                  )}
                 </motion.div>
               ))}
             </AnimatePresence>
           </motion.div>
 
-          {visible.length === 0 && items.length > 0 && (
+          {visible.length === 0 && displayItems.length > 0 && (
             <motion.p className="text-center text-ink/40 py-20 text-sm" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
               No pieces in this category yet.
             </motion.p>

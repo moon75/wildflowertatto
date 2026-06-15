@@ -23,7 +23,7 @@ const staticItems: { img: StaticImageData; alt: string; cat: CategoryKey }[] = [
   { img: tigerImg,     alt: "Black and grey tiger tattoo",        cat: "blackGrey" },
   { img: botanicalImg, alt: "Colour botanical poppy tattoo",      cat: "botanical" },
   { img: portraitImg,  alt: "Black and grey portrait tattoo",     cat: "portrait" },
-  { img: flowerImg,    alt: "Botanical dandelion flower tattoo",  cat: "botanical" },
+  { img: flowerImg,    alt: "Botanical dandelion flower tattoo",  cat: "healed" },
 ];
 
 interface SanityItem {
@@ -103,7 +103,7 @@ export default function PortfolioSection() {
                   key={item.alt}
                   variants={{ hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0, transition: { duration: 0.55, ease } } }}
                 >
-                  <Link href={`/portfolio?cat=${item.cat}`} className="group block">
+                  <Link href={item.cat === "healed" ? "/portfolio?cat=healed" : `/portfolio?cat=${item.cat}`} className="group block">
                     <motion.div
                       className="relative overflow-hidden rounded-lg shadow-soft aspect-[3/4] bg-bone"
                       whileHover={{ scale: 1.03 }}

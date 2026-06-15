@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
-import heroImage from "@/src/assets/images/wildflowertattoolydiaszubert.JPG";
+import heroImage from "@/src/assets/images/wildflowertattoolydiaszubert new homepage image.webp";
 
 import AboutSection from "@/components/AboutSection";
 import SpecializationsSection from "@/components/SpecializationsSection";
@@ -33,8 +33,8 @@ export default function HomePage() {
           </motion.h1>
 
           <motion.div
-            className="mt-4 md:mt-6 mx-auto overflow-hidden shadow-soft"
-            style={{ width: "calc(100% - 10px)" }}
+            className="mt-4 md:mt-6 mx-auto overflow-hidden shadow-soft relative"
+            style={{ width: "calc(100% - 10px)", aspectRatio: "2975/1587" }}
             initial={{ opacity: 0, y: 30, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.8, ease, delay: 0.35 }}
@@ -43,7 +43,8 @@ export default function HomePage() {
               src={heroImage}
               alt="Wildflower tattoo artist at work"
               priority
-              className="w-full h-auto object-cover"
+              fill
+              className="object-cover"
               sizes="(min-width: 1024px) 1024px, 100vw"
             />
           </motion.div>
