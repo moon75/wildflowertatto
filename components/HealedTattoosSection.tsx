@@ -30,7 +30,7 @@ export default function HealedTattoosSection() {
       .fetch<any[]>(`*[_type == "portfolioImage" && "healed" in categories] | order(order asc) { alt, image }`)
       .then((data) => {
         if (data && data.length > 0) {
-          setBaseSlides(data.map((item) => ({
+          setBaseSlides(data.filter((item) => item.image != null).map((item) => ({
             src: urlFor(item.image).width(700).auto("format").url(),
             alt: item.alt,
           })));

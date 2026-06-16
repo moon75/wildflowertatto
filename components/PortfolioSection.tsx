@@ -44,7 +44,7 @@ export default function PortfolioSection() {
       .fetch<SanityItem[]>(
         `*[_type == "portfolioImage" && featured == true] | order(order asc) { _id, alt, categories, image }`
       )
-      .then(setSanityItems)
+      .then((data) => setSanityItems(data.filter((item) => item.image != null)))
       .catch(() => {});
   }, []);
 
@@ -83,12 +83,14 @@ export default function PortfolioSection() {
                       whileHover={{ scale: 1.03 }}
                       transition={{ duration: 0.35, ease: "easeOut" }}
                     >
-                      <img
-                        src={urlFor(item.image).width(600).auto("format").url()}
-                        alt={item.alt}
-                        className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
-                        loading="lazy"
-                      />
+                      {item.image && (
+                        <img
+                          src={urlFor(item.image).width(600).auto("format").url()}
+                          alt={item.alt}
+                          className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                          loading="lazy"
+                        />
+                      )}
                     </motion.div>
                     <p
                       className="mt-3 text-center text-sage leading-tight"
