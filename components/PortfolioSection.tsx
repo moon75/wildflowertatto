@@ -15,7 +15,7 @@ import botanicalImg from "@/src/assets/images/colourrealismbotanicalpoppytattoo.
 import portraitImg  from "@/src/assets/images/blackandgreyrealismportraittattoo.JPG";
 import flowerImg    from "@/src/assets/images/botanicaldandilionflowertattoo.jpeg";
 
-type CategoryKey = "animalPet" | "microRealism" | "blackGrey" | "botanical" | "portrait";
+type CategoryKey = "animalPet" | "microRealism" | "blackGrey" | "botanical" | "portrait" | "healed";
 
 const staticItems: { img: StaticImageData; alt: string; cat: CategoryKey }[] = [
   { img: birdImg,      alt: "Colour realism bird tattoo",         cat: "animalPet" },
@@ -104,7 +104,7 @@ export default function PortfolioSection() {
                   key={item.alt}
                   variants={{ hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0, transition: { duration: 0.55, ease } } }}
                 >
-                  <Link href={item.cat === "healed" ? "/portfolio?cat=healed" : `/portfolio?cat=${item.cat}`} className="group block">
+                  <Link href={`/portfolio?cat=${item.cat}`} className="group block">
                     <motion.div
                       className="relative overflow-hidden rounded-lg shadow-soft aspect-[3/4] bg-bone"
                       whileHover={{ scale: 1.03 }}
