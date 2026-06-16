@@ -117,7 +117,7 @@ export default function ContactPage() {
 
                 <p className="text-ink/35 text-[12px] leading-relaxed -mt-2">
                   This will open your email app. For a faster response, message me on{" "}
-                  <a href={contact.whatsappUrl} target="_blank" rel="noopener noreferrer" className="text-sage underline underline-offset-2">
+                  <a href={settings.whatsappUrl} target="_blank" rel="noopener noreferrer" className="text-sage underline underline-offset-2">
                     WhatsApp
                   </a>.
                 </p>
