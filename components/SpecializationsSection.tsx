@@ -12,6 +12,14 @@ import portraitImg from "@/src/assets/images/blackandgreyrealismportraittattoo.J
 import blackGreyImg from "@/src/assets/images/blackandgreyealismtattoo-tiger.JPG";
 
 type SpecKey = "micro" | "animal" | "coverup" | "botanical" | "portrait" | "blackGrey";
+const categoryMap: Record<SpecKey, string> = {
+  micro: "microRealism",
+  animal: "animalPet",
+  coverup: "coverup",
+  botanical: "botanical",
+  portrait: "portrait",
+  blackGrey: "blackGrey",
+};
 const items: { key: SpecKey; img: typeof microImg }[] = [
   { key: "micro", img: microImg },
   { key: "animal", img: animalImg },
@@ -44,7 +52,7 @@ export default function SpecializationsSection() {
                 key={item.key}
                 variants={{ hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0, transition: { duration: 0.55, ease } } }}
               >
-                <Link href="/portfolio" className="group block">
+                <Link href={`/portfolio?cat=${categoryMap[item.key]}`} className="group block">
                   <motion.div
                     className="overflow-hidden rounded-lg shadow-soft aspect-[3/4] bg-bone"
                     whileHover={{ scale: 1.03 }}

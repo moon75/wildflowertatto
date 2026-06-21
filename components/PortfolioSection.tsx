@@ -77,7 +77,7 @@ export default function PortfolioSection() {
                   key={item._id}
                   variants={{ hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0, transition: { duration: 0.55, ease } } }}
                 >
-                  <Link href="/portfolio" className="group block">
+                  <Link href={`/portfolio${item.categories?.[0] ? `?cat=${item.categories[0]}` : ""}`} className="group block">
                     <motion.div
                       className="relative overflow-hidden rounded-lg shadow-soft aspect-[3/4] bg-bone"
                       whileHover={{ scale: 1.03 }}
