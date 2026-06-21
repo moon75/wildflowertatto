@@ -3,7 +3,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 import { useLocale } from "@/lib/i18n";
+import { sanityClient } from "@/lib/sanity";
+import { urlFor } from "@/lib/sanityImage";
 import microImg from "@/src/assets/images/healedmicrocolourrealismtattoo.JPG";
 import animalImg from "@/src/assets/images/colourrealismbirdtattoo.JPG";
 import coverupImg from "@/src/assets/images/coveruptattoo.jpeg";
@@ -12,6 +15,7 @@ import portraitImg from "@/src/assets/images/blackandgreyrealismportraittattoo.J
 import blackGreyImg from "@/src/assets/images/blackandgreyealismtattoo-tiger.JPG";
 
 type SpecKey = "micro" | "animal" | "coverup" | "botanical" | "portrait" | "blackGrey";
+
 const categoryMap: Record<SpecKey, string> = {
   micro: "microRealism",
   animal: "animalPet",
@@ -20,6 +24,16 @@ const categoryMap: Record<SpecKey, string> = {
   portrait: "portrait",
   blackGrey: "blackGrey",
 };
+
+const sanityFieldMap: Record<SpecKey, string> = {
+  micro: "microRealismImage",
+  animal: "animalPetImage",
+  coverup: "coverupImage",
+  botanical: "botanicalImage",
+  portrait: "portraitImage",
+  blackGrey: "blackGreyImage",
+};
+
 const items: { key: SpecKey; img: typeof microImg }[] = [
   { key: "micro", img: microImg },
   { key: "animal", img: animalImg },
@@ -33,6 +47,14 @@ const ease = [0.22, 1, 0.36, 1] as const;
 
 export default function SpecializationsSection() {
   const { t } = useLocale();
+  const [cms, setCms] = useState<any>(null);
+
+  useEffect(() => {
+    sanityClient
+      .fetch(`*[_type == "specializationsSection"][0]`)
+      .then(setCms)
+      .catch(() => {});
+  }, []);
 
   return (
     <section className="bg-white">
@@ -58,12 +80,21 @@ export default function SpecializationsSection() {
                     whileHover={{ scale: 1.03 }}
                     transition={{ duration: 0.35, ease: "easeOut" }}
                   >
-                    <Image
-                      src={item.img}
-                      alt={t(`specializations.${item.key}`)}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      sizes="(min-width: 1024px) 180px, 45vw"
-                    />
+                    {cms?.[sanityFieldMap[item.key]] ? (
+                      <img
+                        src={urlFor(cms[sanityFieldMap[item.key]]).width(400).auto("format").url()}
+                        alt={t(`specializations.${item.key}`)}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <Image
+                        src={item.img}
+                        alt={t(`specializations.${item.key}`)}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        sizes="(min-width: 1024px) 180px, 45vw"
+                      />
+                    )}
                   </motion.div>
                   <p className="mt-3 text-center text-sage leading-tight" style={{ fontFamily: "var(--font-androgy), serif", fontSize: "clamp(0.9rem, 1.5vw, 1.15rem)" }}>
                     {t(`specializations.${item.key}`)}

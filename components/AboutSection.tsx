@@ -7,6 +7,7 @@ import limeTattoo from "@/src/assets/images/realismcolourlimebotanicaltatoo.JPG"
 import dogsTattoo from "@/src/assets/images/microcolourrealismtattoodogs.JPG";
 import { useLocale } from "@/lib/i18n";
 import { sanityClient } from "@/lib/sanity";
+import { urlFor } from "@/lib/sanityImage";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -23,6 +24,8 @@ export default function AboutSection() {
   const p2 = cms ? cms[`p2_${lang}`] : t("about.p2");
   const p3 = cms ? cms[`p3_${lang}`] : t("about.p3");
   const heading = cms ? cms[`heading_${lang}`] : t("about.heading");
+  const img1Url = cms?.image1 ? urlFor(cms.image1).width(600).auto("format").url() : null;
+  const img2Url = cms?.image2 ? urlFor(cms.image2).width(600).auto("format").url() : null;
 
   return (
     <section className="bg-bone">
@@ -38,13 +41,11 @@ export default function AboutSection() {
               viewport={{ once: true }}
               transition={{ duration: 0.7, ease }}
             >
-              <Image
-                src={limeTattoo}
-                alt="Botanical lime tattoo by Lydia Szubert"
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 50vw, 25vw"
-              />
+              {img1Url ? (
+                <img src={img1Url} alt="Tattoo by Lydia Szubert" className="w-full h-full object-cover" />
+              ) : (
+                <Image src={limeTattoo} alt="Botanical lime tattoo by Lydia Szubert" fill className="object-cover" sizes="(max-width: 1024px) 50vw, 25vw" />
+              )}
             </motion.div>
 
             <motion.div
@@ -54,13 +55,11 @@ export default function AboutSection() {
               viewport={{ once: true }}
               transition={{ duration: 0.7, ease, delay: 0.15 }}
             >
-              <Image
-                src={dogsTattoo}
-                alt="Three dogs micro realism tattoo by Lydia Szubert"
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 50vw, 25vw"
-              />
+              {img2Url ? (
+                <img src={img2Url} alt="Tattoo by Lydia Szubert" className="w-full h-full object-cover" />
+              ) : (
+                <Image src={dogsTattoo} alt="Three dogs micro realism tattoo by Lydia Szubert" fill className="object-cover" sizes="(max-width: 1024px) 50vw, 25vw" />
+              )}
             </motion.div>
           </div>
 
